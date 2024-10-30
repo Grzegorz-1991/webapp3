@@ -1,13 +1,19 @@
 import functions
 import PySimpleGUI as sg
 import time
+import os
+
+if not os.path.exists('todos.txt'):
+    with open('todos.txt', 'w') as file:
+        pass
+
 
 sg.theme('Topanga')
 # Window content
 clock = sg.Text('', key='clock')
 label = sg.Text('Type in a to-do')
 input_box = sg.InputText(tooltip="Enter todo", key='todo')
-add_button = sg.Button('Add')
+add_button = sg.Button(image_source='add.png', size=2, mouseover_colors='pink', tooltip='Add todo!', key='Add')
 list_box = sg.Listbox(values=functions.get_todos(), key='todos',
                       enable_events=True, size=(45, 10))
 edit_button = sg.Button('Edit')
@@ -38,6 +44,7 @@ while True:
             todos.append(new_todo)
             functions.write_todos(todos)
             window['todos'].update(values=todos)
+            window['todo'].update('')
         case 'Edit':
             try:
                 todo_to_edit = values['todos'][0]
